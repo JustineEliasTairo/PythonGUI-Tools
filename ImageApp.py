@@ -91,6 +91,46 @@ class ImageApp(QWidget):
 
     # End def __init__(self): 
     
+    wdir = "";
+    # Filter Files and extensions
+    def filterFiles(self,files, extensions):
+        res = [];
+        for ifile in files:
+            for ext in extensions:
+                if ifile.endswith(ext):
+                    res.append(ifile);
+        
+        return res;
+        
+    # End def filterFiles(self,files, extensions):
+    
+    # Choose current working directory
+    def getWD(self):
+        global wdir;
+        wdir = QFileDialog.getExistingDirectory();
+        exts = ['.PNG','.png','.svg','.jpg','.jpeg'];
+        Fnames = self.filterFiles(os.listdir(wdir),exts);
+        self.file_list.clear();
+        
+        for iFname in Fnames:
+            self.file_list.addItem(iFname);
+        
+        return;
+    
+    # End def getWD(self):
+    
+    def load_img(self,filename):
+        self.filename = filename;    
+        fullname = os.path.join(wdir,self.filename);
+        self.image = Image.open(fullname);
+        self.original = self.image.copy();  
+        tmpStr = self.filename.split('.')
+        self.filename = tmpStr[0] + datetime.now().strftime('_%H_%M_%d_%m_%Y.') + tmpStr[-1]; # Give a TimeStamp a copy
+        
+        return;
+    
+    # End def load_img(self,filename):
+    
     
     
         
