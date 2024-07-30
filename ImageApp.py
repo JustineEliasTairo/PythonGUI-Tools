@@ -132,6 +132,40 @@ class ImageApp(QWidget):
     # End def load_img(self,filename):
     
     
+    def save_img(self):
+        newPath = os.path.join(wdir,self.save_folder);
+        if not os.path.exists(newPath): #or os.path.isdir(newPath):  #If Path does not exists or is Current Working Dir
+            os.mkdir(newPath);
+        
+        Imgfullname = os.path.join(newPath,self.filename);
+        self.image.save(Imgfullname);
+        
+        return;
+    
+    # End def save_img(self):
+    
+    def show_img(self,fullImgPath):
+        self.pic_box.hide();
+        Img = QPixmap(fullImgPath);
+        jwidth,jheight = self.pic_box.width(),self.pic_box.height();
+        Img = Img.scaled(jwidth,jheight,Qt.AspectRatioMode.KeepAspectRatio);  ## To avoid image deformation
+        
+        # Now set the image in the Picture Box
+        self.pic_box.setPixmap(Img);
+        self.pic_box.show();
+        
+        return;
+        
+    # End def show_img(self,fullImgPath):
+    
+    def display_img(self):
+        if self.file_list.currentRow() >= 0:
+            fname = self.file_list.currentItem().text();
+            self.load_img(fname);
+            self.show_img(os.path.join(wdir,fname));
+    
+    # End def display_img(self):  
+    
     
         
     
