@@ -1,6 +1,5 @@
 
 # Import all Modules
-
 import os
 from datetime import datetime
 from PyQt5.QtCore import Qt
@@ -97,6 +96,8 @@ class ImageApp(QWidget):
         ## ACTIONS -----   TODO:   Add Error Handling
         self.btn_folder.clicked.connect(self.getWD);
         self.file_list.currentRowChanged.connect(self.display_img);
+        self.filter_box.currentTextChanged.connect(self.handle_filter);
+        
         self.btn_gray.clicked.connect(self.gray);
         self.btn_left.clicked.connect(self.left);
         self.btn_blur.clicked.connect(self.blur);
@@ -276,20 +277,48 @@ class ImageApp(QWidget):
         
     # End def contrast(self):
     
-    
+    # Apply filters from the Dropdown box
+    def apply_filter (self,filter_name):
         
+        if filter_name == "Original":
+            self.image = self.original.copy();
+        else:
+            myDict = {
+                      "B/W":        lambda image: self.image.convert("L"),
+                      "Saturation": lambda image: ImageEnhance.Color(self.image).enhance(1.2),
+                      "Contrast":   lambda image: ImageEnhance.Contrast(self.image).enhance(1.2),
+                      "Blur":       lambda image: self.image.filter(ImageFilter.BLUR),
+                      "Left":       lambda image: self.image.transpose(Image.ROTATE_90),
+                      "Right":      lambda image: self.image.transpose(Image.ROTATE_270),
+                      "Mirror":     lambda image: self.image.transpose(Image.FLIP_LEFT_RIGHT),
+                      "Sharpness":  lambda image: self.image.filter(ImageFilter.SHARPEN),
+                      };
+            
+            filter_funct = myDict.get(filter_name);
+            if filter_funct:
+                self.image = filter_funct(self.image);
+                self.save_img();
+                
+                ImgPath = os.path.join(wdir,self.save_folder,self.filename);
+                self.show_img(ImgPath);
+            pass
+            
+        self.save_img();  
+        ImgPath = os.path.join(wdir,self.save_folder,self.filename);
+        self.show_img(ImgPath);
+        
+        return;
+                
+    # End def apply_filter (self,filter_name):  
     
-
-
+    def handle_filter(self):
+        if self.file_list.currentRow() >= 0:
+            select_filter = self.filter_box.currentText();
+            self.apply_filter(select_filter);
+          
+    # End def handle_filter(self):
+    
 # End class ImageApp():
-
-
-
-
-
-
-
-
 
 # Start the program
 if __name__ in "__main__":
