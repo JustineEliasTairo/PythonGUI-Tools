@@ -86,6 +86,12 @@ class ImageApp(QWidget):
         
         # Set Master Layout to the Main Window
         self.setLayout(master_Layout);
+        
+        ## To Load Image on the app
+        self.image = None;
+        self.original = None;
+        self.filename = None;
+        self.save_folder = "Edits/";
 
 
 
@@ -165,6 +171,97 @@ class ImageApp(QWidget):
             self.show_img(os.path.join(wdir,fname));
     
     # End def display_img(self):  
+    
+    
+    ## Image Edition
+    
+    def gray(self):
+        self.image = self.image.convert("L");  
+        self.save_img();
+        
+        Img_path = os.path.join(wdir,self.save_folder,self.filename);
+        self.show_img(Img_path);
+        
+        return;
+        
+    # End def gray(self):      
+    
+    def left(self):
+        self.image = self.image.transpose(Image.ROTATE_90);  
+        self.save_img();
+        
+        Img_path = os.path.join(wdir,self.save_folder,self.filename);
+        self.show_img(Img_path);
+        
+        return;
+        
+    # End def left(self):   
+    
+    def right(self):
+        self.image = self.image.transpose(Image.ROTATE_270);  
+        self.save_img();
+        
+        Img_path = os.path.join(wdir,self.save_folder,self.filename);
+        self.show_img(Img_path);
+        
+        return;
+        
+    # End def right(self):  
+    
+    def mirror(self):
+        self.image = self.image.transpose(Image.FLIP_LEFT_RIGHT);  
+        self.save_img();
+        
+        Img_path = os.path.join(wdir,self.save_folder,self.filename);
+        self.show_img(Img_path);
+        
+        return;
+        
+    # End def mirror(self):  
+    
+    def sharpen(self):
+        self.image = self.image.filter(ImageFilter.SHARPEN);  
+        self.save_img();
+        
+        Img_path = os.path.join(wdir,self.save_folder,self.filename);
+        self.show_img(Img_path);
+        
+        return;
+        
+    # End def sharpen(self):  
+    
+    def blur(self):
+        self.image = self.image.filter(ImageFilter.BLUR);  
+        self.save_img();
+        
+        Img_path = os.path.join(wdir,self.save_folder,self.filename);
+        self.show_img(Img_path);
+        
+        return;
+        
+    # End def blur(self):
+    
+    def color(self):
+        self.image = ImageEnhance.Color(self.image).enhance(1.2);  
+        self.save_img();
+        
+        Img_path = os.path.join(wdir,self.save_folder,self.filename);
+        self.show_img(Img_path);
+        
+        return;
+        
+    # End def color(self):
+    
+    def contrast(self):
+        self.image = ImageEnhance.Contrast(self.image).enhance(1.2);  
+        self.save_img();
+        
+        Img_path = os.path.join(wdir,self.save_folder,self.filename);
+        self.show_img(Img_path);
+        
+        return;
+        
+    # End def contrast(self):
     
     
         
