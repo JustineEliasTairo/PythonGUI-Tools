@@ -92,6 +92,19 @@ class ImageApp(QWidget):
         self.original = None;
         self.filename = None;
         self.save_folder = "Edits/";
+        
+        
+        ## ACTIONS -----   TODO:   Add Error Handling
+        self.btn_folder.clicked.connect(self.getWD);
+        self.file_list.currentRowChanged.connect(self.display_img);
+        self.btn_gray.clicked.connect(self.gray);
+        self.btn_left.clicked.connect(self.left);
+        self.btn_blur.clicked.connect(self.blur);
+        self.btn_contrast.clicked.connect(self.contrast);
+        self.btn_sharpness.clicked.connect(self.sharpen);
+        self.btn_mirror.clicked.connect(self.mirror);
+        self.btn_right.clicked.connect(self.right);
+        self.btn_saturation.clicked.connect(self.color);
 
 
 
